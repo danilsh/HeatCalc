@@ -1,0 +1,627 @@
+﻿<Window x:Class="HeatCalc.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:HeatCalc.Presentation"
+        xmlns:localIo="clr-namespace:HeatCalc.IO"
+        Height="350" Width="700" WindowState="Maximized" Title="{Binding Path=Title}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TreeViewBorderStyle">
+                <Setter Property="Border.BorderThickness" Value="1" />
+                <Setter Property="Border.BorderBrush" Value="Black" />
+                <Setter Property="Border.CornerRadius" Value="3" />
+                <Setter Property="Border.Padding" Value="5" />
+                <Setter Property="Border.Margin" Value="2" />
+            </Style>
+            <Style x:Key="TextHeading">
+                <Setter Property="TextBlock.FontWeight" Value="Bold" />
+            </Style>
+            <Style x:Key="BuildingTreeButton">
+                <Setter Property="Button.FontWeight" Value="Bold" />
+                <Setter Property="Button.FontSize" Value="18" />
+            </Style>
+            <Style x:Key="NameEditor">
+                <Setter Property="Button.FontWeight" Value="Bold" />
+                <Setter Property="Button.FontSize" Value="18" />
+                <Setter Property="Button.Foreground" Value="Gray" />
+                <Setter Property="Button.Margin" Value="7,7,3,3" />
+                <Setter Property="Button.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3" Padding="2">
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="PropertyEditor">
+                <Setter Property="Button.Margin" Value="3" />
+                <Setter Property="Button.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3" Padding="2">
+                                <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <HierarchicalDataTemplate DataType="{x:Type local:BuildingViewModel}" ItemsSource="{Binding Children}">
+                <Border Name="Border" Style="{StaticResource TreeViewBorderStyle}" Background="#FFD1D1D1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Style="{StaticResource TextHeading}" Grid.Row="0" Grid.ColumnSpan="6" Text="{Binding Name}"/>
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Внешняя:" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ExternalTemperature}" />
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="°C" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Внутренняя:" />
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding InternalTemperature}" />
+                        <TextBlock Grid.Row="2" Grid.Column="4" Text="°C" />
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Теплопотери:" />
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding HeatLoss}" />
+                        <TextBlock Grid.Row="3" Grid.Column="4" Text="Вт" />
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="4" Grid.Column="6">
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="Icons.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewZone}" Content="{StaticResource AddIcon}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <HierarchicalDataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                        <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Lime" />
+                    </DataTrigger>
+                </HierarchicalDataTemplate.Triggers>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate DataType="{x:Type local:ZoneViewModel}" ItemsSource="{Binding Children}">
+                <Border Name="Border"  Style="{StaticResource TreeViewBorderStyle}" Background="#FFA2DCF8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource TextHeading}" Grid.Row="0" Grid.ColumnSpan="6" Text="{Binding Name}" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Объем:" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Volume}" />
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="м3" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Объем внешнего приточного воздуха:" />
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding AirExchange}" />
+                        <TextBlock Grid.Row="2" Grid.Column="4" Text="м3 / час" />
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="3" Grid.Column="6">
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="Icons.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewCladding}" Content="{StaticResource AddIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteZone}" Content="{StaticResource DeleteIcon}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <HierarchicalDataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                        <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Lime" />
+                    </DataTrigger>
+                </HierarchicalDataTemplate.Triggers>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate DataType="{x:Type local:CladdingViewModel}" ItemsSource="{Binding Children}">
+                <Border Name="Border"  Style="{StaticResource TreeViewBorderStyle}" Background="#FFD1D493">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource TextHeading}" Grid.Row="0" Grid.Column="0" Text="{Binding Name}" />
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2">
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="Icons.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteCladding}" Content="{StaticResource DeleteIcon}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <HierarchicalDataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                        <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Lime" />
+                    </DataTrigger>
+                </HierarchicalDataTemplate.Triggers>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate DataType="{x:Type local:AperturesListViewModel}" ItemsSource="{Binding Children}">
+                <Border Name="Border"  Style="{StaticResource TreeViewBorderStyle}" Background="#FFECF2A4">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource TextHeading}" Grid.Row="0" Grid.Column="0">Окна / Двери / Люки</TextBlock>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2">
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="Icons.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewAperture}" Content="{StaticResource AddIcon}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <HierarchicalDataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                        <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Lime" />
+                    </DataTrigger>
+                </HierarchicalDataTemplate.Triggers>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate DataType="{x:Type local:CladdingPartsListViewModel}" ItemsSource="{Binding Children}">
+                <Border Name="Border"  Style="{StaticResource TreeViewBorderStyle}" Background="#FFECF2A4">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource TextHeading}" Grid.Row="0" Grid.Column="0">Элементы ограждающей конструкции</TextBlock>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2">
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="Icons.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewCladdingPart}" Content="{StaticResource AddIcon}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <HierarchicalDataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                        <Setter TargetName="Border" Property="BorderThickness" Value="2" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Lime" />
+                    </DataTrigger>
+                </HierarchicalDataTemplate.Triggers>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate DataType="{x:Type local:ApertureViewModel}" ItemsSource="{Binding Children}">
+                <Border Name="Border"  Style="{StaticResource TreeViewBorderStyle}" BorderThickness="2" BorderBrush="#FFA399F8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource TextHeading}" Grid.Row="0" Grid.ColumnSpan="6" Text="{Binding Name}" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Коэффициент теплопередачи:" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding HeatTransferCoefficient}" />
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="Вт / (м2 К)" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Площадь:" />
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Area}" />
+                        <TextBlock Grid.Row="2" Grid.Column="4" Text="м2" />
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="3" Grid.Column="6">
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="Icons.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteAperture}" Content="{StaticResource DeleteIcon}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <HierarchicalDataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                        <Setter TargetName="Border" Property="BorderThickness" Value="3" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Lime" />
+                    </DataTrigger>
+                </HierarchicalDataTemplate.Triggers>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate DataType="{x:Type local:CladdingPartViewModel}" ItemsSource="{Binding Children}">
+                <Border Name="Border"  Style="{StaticResource TreeViewBorderStyle}" BorderThickness="2" BorderBrush="#FFB279DB">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource TextHeading}" Grid.Row="0" Grid.ColumnSpan="6" Text="{Binding Name}" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Площадь:" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Area}" />
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="м2" />
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="6">
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="Icons.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewCladdingLayer}" Content="{StaticResource AddIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteCladdingPart}" Content="{StaticResource DeleteIcon}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <HierarchicalDataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                        <Setter TargetName="Border" Property="BorderThickness" Value="3" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Lime" />
+                    </DataTrigger>
+                </HierarchicalDataTemplate.Triggers>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate DataType="{x:Type local:CladdingLayerViewModel}" ItemsSource="{Binding Children}">
+                <Border Name="Border"  Style="{StaticResource TreeViewBorderStyle}" BorderThickness="2" BorderBrush="#FFE2A582">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource TextHeading}" Grid.Row="0" Grid.ColumnSpan="6" Text="{Binding Name}" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Коэффициент теплопередачи:" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ThermalConductivity}" />
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="Вт / (м2 К)" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Толщина слоя:" />
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Thickness}" />
+                        <TextBlock Grid.Row="2" Grid.Column="4" Text="м" />
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Row="0" Grid.RowSpan="3" Grid.Column="6">
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="Icons.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=AddToLibrary}" Content="{StaticResource DownArrowIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteCladdingLayer}" Content="{StaticResource DeleteIcon}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <HierarchicalDataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                        <Setter TargetName="Border" Property="BorderThickness" Value="3" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Lime" />
+                    </DataTrigger>
+                </HierarchicalDataTemplate.Triggers>
+            </HierarchicalDataTemplate>
+
+            <DataTemplate DataType="{x:Type local:BuildingEditViewModel}">
+                <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Style="{StaticResource NameEditor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Name}" />
+                    <Label Grid.Row="1" Grid.Column="0">Температура наружного воздуха:</Label>
+                    <TextBox Style="{StaticResource PropertyEditor}" Grid.Row="1" Grid.Column="1" Text="{Binding ExternalTemperature}" />
+                    <Label Grid.Row="1" Grid.Column="2">°C</Label>
+                    <Label Grid.Row="2" Grid.Column="0">Температура внутреннего воздуха:</Label>
+                    <TextBox Style="{StaticResource PropertyEditor}" Grid.Row="2" Grid.Column="1" Text="{Binding InternalTemperature}" />
+                    <Label Grid.Row="2" Grid.Column="2">°C</Label>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:ZoneEditViewModel}">
+                <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Style="{StaticResource NameEditor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Name}" />
+                    <Label Grid.Row="1" Grid.Column="0">Объем:</Label>
+                    <TextBox Style="{StaticResource PropertyEditor}" Grid.Row="1" Grid.Column="1" Text="{Binding Volume}" />
+                    <Label Grid.Row="1" Grid.Column="2">м3</Label>
+                    <Label Grid.Row="2" Grid.Column="0">Объем внешнего приточного воздуха:</Label>
+                    <TextBox Style="{StaticResource PropertyEditor}" Grid.Row="2" Grid.Column="1" Text="{Binding AirExchange}" />
+                    <Label Grid.Row="2" Grid.Column="2">м3 / час</Label>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:CladdingEditViewModel}">
+                <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Style="{StaticResource NameEditor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Name}" />
+                </Grid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:ApertureEditViewModel}">
+                <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Style="{StaticResource NameEditor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Name}" />
+                    <Label Grid.Row="1" Grid.Column="0">Коэффициент теплопередачи:</Label>
+                    <TextBox Style="{StaticResource PropertyEditor}" Grid.Row="1" Grid.Column="1" Text="{Binding HeatTransferCoefficient}" />
+                    <Label Grid.Row="1" Grid.Column="2">Вт / (м2 К)</Label>
+                    <Label Grid.Row="2" Grid.Column="0">Площадь:</Label>
+                    <TextBox Style="{StaticResource PropertyEditor}" Grid.Row="2" Grid.Column="1" Text="{Binding Area}" />
+                    <Label Grid.Row="2" Grid.Column="2">м2</Label>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:CladdingPartEditViewModel}">
+                <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Style="{StaticResource NameEditor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Name}" />
+                    <Label Grid.Row="1" Grid.Column="0">Площадь:</Label>
+                    <TextBox Style="{StaticResource PropertyEditor}" Grid.Row="1" Grid.Column="1" Text="{Binding Area}" />
+                    <Label Grid.Row="1" Grid.Column="2">м2</Label>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type local:CladdingLayerEditViewModel}">
+                <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Style="{StaticResource NameEditor}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Name}" />
+                    <Label Grid.Row="1" Grid.Column="0">Коэффициент теплопередачи:</Label>
+                    <TextBox Style="{StaticResource PropertyEditor}" Grid.Row="1" Grid.Column="1" Text="{Binding ThermalConductivity}" />
+                    <Label Grid.Row="1" Grid.Column="2">Вт / (м2 К)</Label>
+                    <Label Grid.Row="2" Grid.Column="0">Толщина слоя:</Label>
+                    <TextBox Style="{StaticResource PropertyEditor}" Grid.Row="2" Grid.Column="1" Text="{Binding Thickness}" />
+                    <Label Grid.Row="2" Grid.Column="2">м</Label>
+                </Grid>
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type local:MaterialViewModel}">
+                <Border Name="Border"  Style="{StaticResource TreeViewBorderStyle}" BorderThickness="2" BorderBrush="#FFE2A582">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="5pt" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource TextHeading}" Grid.Row="0" Grid.ColumnSpan="6" Text="{Binding Name}" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Коэффициент теплопередачи:" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ThermalConductivity}" />
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="Вт / (м2 К)" />
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="6">
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <ResourceDictionary.MergedDictionaries>
+                                        <ResourceDictionary Source="Icons.xaml" />
+                                    </ResourceDictionary.MergedDictionaries>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=SetMaterial}" Content="{StaticResource UpArrowIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteMaterial}" Content="{StaticResource DeleteIcon}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True">
+                        <Setter TargetName="Border" Property="BorderThickness" Value="3" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Lime" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+            <local:DialogService x:Key="DialogService"/>
+            <localIo:FileService x:Key="FileService"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.DataContext>
+        <local:MainWindowViewModel DialogService="{StaticResource DialogService}" FileService="{StaticResource FileService}" />
+    </Window.DataContext>
+    <Grid Grid.IsSharedSizeScope="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400pt" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" SharedSizeGroup="Library"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+                    <Button Command="{Binding Path=Save}">Сохранить</Button>
+                    <Button Margin="5,0,0,0" Command="{Binding Path=SaveDlg}">Сохранить в...</Button>
+                    <Button Margin="5,0,0,0" Command="{Binding Path=LoadDlg}">Загрузить...</Button>
+                </StackPanel>
+                <TreeView Name="buildingStructureTree" Grid.Row="1" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" ItemsSource="{Binding Buildings}">
+                    <TreeView.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveCaptionBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveCaptionTextBrushKey}" Color="Black" />
+                    </TreeView.Resources>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                </TreeView>
+            </Grid>
+            <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="5" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" Grid.Row="1" />
+            <StackPanel Orientation="Vertical" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Label FontSize="18" FontWeight="Bold">Библиотека материалов</Label>
+                <ListView VerticalAlignment="Stretch" ItemsSource="{Binding Materials}">
+                    <ListView.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveCaptionBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveCaptionTextBrushKey}" Color="Black" />
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </StackPanel>
+        </Grid>
+        <GridSplitter HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" Grid.Column="1" Grid.RowSpan="3" />
+        <Grid Grid.Row="0" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" SharedSizeGroup="Library" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Content="{Binding ElementName=buildingStructureTree, Path=SelectedItem.EditorViewModel}" />
+            <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="5" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" Grid.Row="1" />
+            <ScrollViewer Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>
