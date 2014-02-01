@@ -558,19 +558,19 @@
     <Window.DataContext>
         <local:MainWindowViewModel DialogService="{StaticResource DialogService}" FileService="{StaticResource FileService}" />
     </Window.DataContext>
-    <Grid Grid.IsSharedSizeScope="True">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400pt" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" SharedSizeGroup="Library"/>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="300pt" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400pt" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -594,34 +594,29 @@
                     </TreeView.ItemContainerStyle>
                 </TreeView>
             </Grid>
-            <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="5" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" Grid.Row="1" />
-            <StackPanel Orientation="Vertical" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Label FontSize="18" FontWeight="Bold">Библиотека материалов</Label>
-                <ListView VerticalAlignment="Stretch" ItemsSource="{Binding Materials}">
-                    <ListView.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveCaptionBrushKey}" Color="Transparent" />
-                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveCaptionTextBrushKey}" Color="Black" />
-                    </ListView.Resources>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListViewItem}">
-                            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                </ListView>
-            </StackPanel>
+            <GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" />
+            <ScrollViewer Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Content="{Binding ElementName=buildingStructureTree, Path=SelectedItem.EditorViewModel}" />
         </Grid>
-        <GridSplitter HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" Grid.Column="1" Grid.RowSpan="3" />
-        <Grid Grid.Row="0" Grid.Column="2">
+        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="5" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" />
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" SharedSizeGroup="Library" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ScrollViewer Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Content="{Binding ElementName=buildingStructureTree, Path=SelectedItem.EditorViewModel}" />
-            <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="5" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" Grid.Row="1" />
-            <ScrollViewer Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ScrollViewer>
+            <Label Grid.Row="0" FontSize="18" FontWeight="Bold">Библиотека материалов</Label>
+            <ListView Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" ItemsSource="{Binding Materials}" BorderThickness="0">
+                <ListView.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveCaptionBrushKey}" Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveCaptionTextBrushKey}" Color="Black" />
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
         </Grid>
     </Grid>
 </Window>

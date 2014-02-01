@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Input;
 using HeatCalc.HeatLoss;
 using HeatCalc.MVVM.Common;
+using System.Globalization;
 
 namespace HeatCalc.Presentation
 {
@@ -53,7 +54,8 @@ namespace HeatCalc.Presentation
         private void SetMaterialCommand()
         {
             if (_mainWindowViewModel.SelectedCladdingLayer == null) return;
-            _mainWindowViewModel.SelectedCladdingLayer.SetMaterial(_material);
+            _mainWindowViewModel.SelectedCladdingLayer.ThermalConductivity = _material.ThermalConductivity.ToString();
+            _mainWindowViewModel.SelectedCladdingLayer.Name = _material.Name;
         }
    }
 }

@@ -31,7 +31,10 @@ namespace HeatCalc.Presentation
 
         private void NewCladdingPartCommand()
         {
-            var wallPart = new CladdingPart(1.0);
+            var wallPart = new CladdingPart
+                {
+                    Area = 1.0
+                };
             _cladding.Parts.Add(wallPart);
             children.Add(new CladdingPartViewModel(wallPart, this));
             _claddingViewModel.Update();

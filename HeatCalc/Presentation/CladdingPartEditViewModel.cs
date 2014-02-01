@@ -16,9 +16,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (String.IsNullOrEmpty(value)) return;
-                var tmp = _part.Name;
-                if (!SetValue(ref tmp, value, "Name")) return;
-                _part.Name = tmp;
+                if (!SetValue(ref _part.Name, value, "Name")) return;
                 _partViewModel.Update();
             }
         }
@@ -28,9 +26,7 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.00}", _part.Area); }
             set
             {
-                var tmp = _part.Area;
-                if (!SetValue(ref tmp, double.Parse(value, CultureInfo.InvariantCulture), "Area")) return;
-                _part.Area = tmp;
+                if (!SetValue(ref _part.Area, double.Parse(value), "Area")) return;
                 _partViewModel.Update();
             }
         }

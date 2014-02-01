@@ -132,12 +132,10 @@ namespace HeatCalc.IO
             try
             {
                 return new CladdingLayer
-                    (
-                        double.Parse(element.Attribute("ThermalConductivity").Value, CultureInfo.InvariantCulture), 
-                        double.Parse(element.Attribute("Thickness").Value, CultureInfo.InvariantCulture)
-                    )
                     {
-                        Name = element.Attribute("Name").Value
+                        Name = element.Attribute("Name").Value,
+                        ThermalConductivity = double.Parse(element.Attribute("ThermalConductivity").Value, CultureInfo.InvariantCulture),
+                        Thickness = double.Parse(element.Attribute("Thickness").Value, CultureInfo.InvariantCulture)
                     };
             }
             catch (Exception)
@@ -151,11 +149,9 @@ namespace HeatCalc.IO
             try
             {
                 var ret = new CladdingPart
-                    (
-                        double.Parse(element.Attribute("Area").Value, CultureInfo.InvariantCulture)
-                    )
                     {
-                        Name = element.Attribute("Name").Value
+                        Name = element.Attribute("Name").Value,
+                        Area = double.Parse(element.Attribute("Area").Value, CultureInfo.InvariantCulture)
                     };
                 foreach (var wl in element.Elements("CladdingLayer").Select(LoadCladdingLayer).Where(wl => wl != null))
                 {
@@ -174,12 +170,10 @@ namespace HeatCalc.IO
             try
             {
                 return new Aperture
-                    (
-                        double.Parse(element.Attribute("HeatTransferCoefficient").Value, CultureInfo.InvariantCulture),
-                        double.Parse(element.Attribute("Area").Value, CultureInfo.InvariantCulture)
-                    )
                     {
-                        Name = element.Attribute("Name").Value
+                        Name = element.Attribute("Name").Value,
+                        HeatTransferCoefficient = double.Parse(element.Attribute("HeatTransferCoefficient").Value, CultureInfo.InvariantCulture),
+                        Area = double.Parse(element.Attribute("Area").Value, CultureInfo.InvariantCulture)
                     };
             }
             catch (Exception)
@@ -214,12 +208,10 @@ namespace HeatCalc.IO
             try
             {
                 var ret = new Zone
-                    (
-                        double.Parse(element.Attribute("Volume").Value, CultureInfo.InvariantCulture),
-                        double.Parse(element.Attribute("AirExchange").Value, CultureInfo.InvariantCulture)
-                    )
                     {
-                        Name = element.Attribute("Name").Value
+                        Name = element.Attribute("Name").Value,
+                        AirExchange = double.Parse(element.Attribute("AirExchange").Value, CultureInfo.InvariantCulture),
+                        Volume = double.Parse(element.Attribute("Volume").Value, CultureInfo.InvariantCulture)
                     };
                 foreach (var c in element.Elements("Cladding").Select(LoadCladding).Where(c => c != null))
                 {
@@ -238,12 +230,10 @@ namespace HeatCalc.IO
             try
             {
                 var ret = new Building
-                    (
-                        double.Parse(element.Attribute("ExternalTemperature").Value, CultureInfo.InvariantCulture),
-                        double.Parse(element.Attribute("InternalTemperature").Value, CultureInfo.InvariantCulture)
-                    )
                     {
-                        Name = element.Attribute("Name").Value
+                        Name = element.Attribute("Name").Value,
+                        ExternalTemperature = double.Parse(element.Attribute("ExternalTemperature").Value, CultureInfo.InvariantCulture),
+                        InternalTemperature = double.Parse(element.Attribute("InternalTemperature").Value, CultureInfo.InvariantCulture)
                     };
                 foreach (var z in element.Elements("Zone").Select(LoadZone).Where(z => z != null))
                 {

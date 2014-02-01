@@ -8,35 +8,20 @@ namespace HeatCalc.HeatLoss
     /// </summary>
     class Aperture
     {
-        private String _name = "Окно/Дверь/Люк";
         /// <summary>
         /// Название окна/двери/люка
         /// </summary>
-        public String Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public String Name = "Окно/Дверь/Люк";
 
-        private double _heatTransferCoefficient;
         /// <summary>
         /// Коэффициент теплопроводности, Вт / (м2 К)
         /// </summary>
-        public double HeatTransferCoefficient
-        {
-            get { return _heatTransferCoefficient; }
-            set { _heatTransferCoefficient = value; }
-        }
-    
-        private double _area;
+        public double HeatTransferCoefficient;
+
         /// <summary>
         /// Площадь, м2
         /// </summary>
-        public double Area
-        {
-            get { return _area; }
-            set { _area = value; }
-        }
+        public double Area;
 
         /// <summary>
         /// Теплопроводность окна/двери/люка, Вт / К
@@ -45,19 +30,8 @@ namespace HeatCalc.HeatLoss
         {
             get
             {
-                return _heatTransferCoefficient * _area;
+                return HeatTransferCoefficient * Area;
             }
-        }
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="heatTransferCoefficient">Коэффициент теплопередачи, Вт / (м2 К)</param>
-        /// <param name="area">Площадь, м2</param>
-        public Aperture(double heatTransferCoefficient, double area)
-        {
-            _heatTransferCoefficient = heatTransferCoefficient;
-            _area = area;
         }
     }
 }

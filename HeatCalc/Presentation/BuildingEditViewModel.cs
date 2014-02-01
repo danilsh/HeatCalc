@@ -16,9 +16,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (String.IsNullOrEmpty(value)) return;
-                var tmp = _building.Name;
-                if (!SetValue(ref tmp, value, "Name")) return;
-                _building.Name = tmp;
+                if (!SetValue(ref _building.Name, value, "Name")) return;
                 _buildingViewModel.Update();
             }
         }
@@ -28,9 +26,7 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.#}", _building.ExternalTemperature); }
             set
             {
-                var tmp = _building.ExternalTemperature;
-                if (!SetValue(ref tmp, double.Parse(value, CultureInfo.InvariantCulture), "ExternalTemperature")) return;
-                _building.ExternalTemperature = tmp;
+                if (!SetValue(ref _building.ExternalTemperature, double.Parse(value), "ExternalTemperature")) return;
                 _buildingViewModel.Update();
             }
         }
@@ -40,9 +36,7 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.#}", _building.InternalTemperature); }
             set
             {
-                var tmp = _building.InternalTemperature;
-                if (!SetValue(ref tmp, double.Parse(value, CultureInfo.InvariantCulture), "InternalTemperature")) return;
-                _building.InternalTemperature = tmp;
+                if (!SetValue(ref _building.InternalTemperature, double.Parse(value), "InternalTemperature")) return;
                 _buildingViewModel.Update();
             }
         }

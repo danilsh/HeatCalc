@@ -33,8 +33,8 @@ namespace HeatCalc.Presentation
 
         private readonly Library _library = new Library();
 
-        private CladdingLayerViewModel _selectedCladdingLayer = null;
-        public CladdingLayerViewModel SelectedCladdingLayer
+        private CladdingLayerEditViewModel _selectedCladdingLayer = null;
+        public CladdingLayerEditViewModel SelectedCladdingLayer
         {
             get { return _selectedCladdingLayer; }
             set { _selectedCladdingLayer = value; }
@@ -69,10 +69,7 @@ namespace HeatCalc.Presentation
 
         public MainWindowViewModel()
         {
-            _buildings.Add(new BuildingViewModel(new Building(-25.0, 20.0)));
-            var material = new Material(1.0);
-            _materials.Add(new MaterialViewModel(material, this));
-            _library.Materials.Add(material);
+            _buildings.Add(new BuildingViewModel(new Building{ExternalTemperature = -26.0, InternalTemperature = 20}));
 
 
             _title = "Тепловые расчеты";

@@ -58,7 +58,11 @@ namespace HeatCalc.Presentation
 
         private void NewCladdingLayerCommand()
         {
-            var layer = new CladdingLayer(1.0, 1.0);
+            var layer = new CladdingLayer
+                {
+                    ThermalConductivity = 1.0,
+                    Thickness = 1.0
+                };
             _part.Layers.Add(layer);
             children.Add(new CladdingLayerViewModel(layer, this));
             _partsListViewModel.Update();

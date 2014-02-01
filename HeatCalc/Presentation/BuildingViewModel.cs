@@ -64,7 +64,11 @@ namespace HeatCalc.Presentation
 
         private void NewZoneCommand()
         {
-            var zone = new Zone(1.0, 1.0);
+            var zone = new Zone
+                {
+                    AirExchange = 1.0,
+                    Volume = 1.0
+                };
             _building.Zones.Add(zone);
             children.Add(new ZoneViewModel(zone, this));
             OnPropertyChanged("HeatLoss");

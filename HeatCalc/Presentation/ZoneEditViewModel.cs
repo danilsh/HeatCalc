@@ -16,9 +16,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (String.IsNullOrEmpty(value)) return;
-                var tmp = _zone.Name;
-                if (!SetValue(ref tmp, value, "Name")) return;
-                _zone.Name = tmp;
+                if (!SetValue(ref _zone.Name, value, "Name")) return;
                 _zoneViewModel.Update();
             }
         }
@@ -28,9 +26,7 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.0}", _zone.Volume); }
             set
             {
-                var tmp = _zone.Volume;
-                if (!SetValue(ref tmp, double.Parse(value, CultureInfo.InvariantCulture), "Volume")) return;
-                _zone.Volume = tmp;
+                if (!SetValue(ref _zone.Volume, double.Parse(value), "Volume")) return;
                 _zoneViewModel.Update();
             }
         }
@@ -40,9 +36,7 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.0}", _zone.AirExchange); }
             set
             {
-                var tmp = _zone.AirExchange;
-                if (!SetValue(ref tmp, double.Parse(value, CultureInfo.InvariantCulture), "AirExchange")) return;
-                _zone.AirExchange = tmp;
+                if (!SetValue(ref _zone.AirExchange, double.Parse(value), "AirExchange")) return;
                 _zoneViewModel.Update();
             }
         }

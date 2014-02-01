@@ -17,35 +17,20 @@ namespace HeatCalc.HeatLoss
             get { return _zones; }
         }
 
-        private String _name = "Здание";
         /// <summary>
         /// Название здания
         /// </summary>
-        public String Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public String Name = "Здание";
 
-        private double _externalTemperature;
         /// <summary>
         /// Температура наружного воздуха, С
         /// </summary>
-        public double ExternalTemperature
-        {
-            get { return _externalTemperature; }
-            set { _externalTemperature = value; }
-        }
-    
-        private double _internalTemperature;
+        public double ExternalTemperature;
+
         /// <summary>
         /// Температура внутреннего воздуха, С
         /// </summary>
-        public double InternalTemperature
-        {
-            get { return _internalTemperature; }
-            set { _internalTemperature = value; }
-        }
+        public double InternalTemperature;
 
         /// <summary>
         /// Теплопотери здания, Вт
@@ -56,21 +41,10 @@ namespace HeatCalc.HeatLoss
             {
                 var tmp = 0.0;
                 _zones.ForEach(z => tmp += z.Tc);
-                tmp *= (_internalTemperature - _externalTemperature);
+                tmp *= (InternalTemperature - ExternalTemperature);
 
                 return tmp;
             }
         }
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="externalTemperature">Внешняя температура, С</param>
-        /// <param name="internalTemperature">Температура в помещении, С</param>
-        public Building(double externalTemperature, double internalTemperature)
-        {
-            _externalTemperature = externalTemperature;
-            _internalTemperature = internalTemperature;
-        }   
     }
 }

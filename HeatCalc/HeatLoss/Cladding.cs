@@ -26,15 +26,10 @@ namespace HeatCalc.HeatLoss
             get { return _parts; }
         }
 
-        private String _name = "Ограждающая конструкция";
         /// <summary>
         /// Название ограждающей конструкции
         /// </summary>
-        public String Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public String Name = "Ограждающая конструкция";
 
         /// <summary>
         /// Теплопроводность ограждающей конструкции, Вт / К

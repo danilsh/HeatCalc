@@ -17,25 +17,15 @@ namespace HeatCalc.HeatLoss
             get { return _layers; }
         }
 
-        private String _name = "Стена/Перекрытие";
         /// <summary>
         /// Название элемента ограждающей конструкции
         /// </summary>
-        public String Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public String Name = "Стена/Перекрытие";
 
-        private double _area;
         /// <summary>
         /// Площадь, м2
         /// </summary>
-        public double Area
-        {
-            get { return _area; }
-            set { _area = value; }
-        }
+        public double Area;
 
         /// <summary>
         /// Теплопроводность многослойной ограждающей конструкции, Вт / К
@@ -46,19 +36,10 @@ namespace HeatCalc.HeatLoss
             {
                 var tmp = 0.0;
                 _layers.ForEach(wl => tmp += wl.R);
-                tmp *= _area;
+                tmp *= Area;
 
-                return (Math.Abs(tmp) < 1e-6) ? 0.0 : 1.0 / tmp * _area;
+                return (Math.Abs(tmp) < 1e-6) ? 0.0 : 1.0 / tmp * Area;
             }
-        }
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="area">Площадь, м2</param>
-        public CladdingPart(double area)
-        {
-            _area = area;
         }
     }
 }

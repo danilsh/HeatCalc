@@ -31,7 +31,11 @@ namespace HeatCalc.Presentation
 
         private void NewAppertureCommand()
         {
-            var aperture = new Aperture(1.0, 1.0);
+            var aperture = new Aperture
+                {
+                    HeatTransferCoefficient = 1.0,
+                    Area = 1.0
+                };
             _cladding.Apertures.Add(aperture);
             children.Add(new ApertureViewModel(aperture, this));
             _claddingViewModel.Update();

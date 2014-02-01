@@ -16,9 +16,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (String.IsNullOrEmpty(value)) return;
-                var tmp = _layer.Name;
-                if (!SetValue(ref tmp, value, "Name")) return;
-                _layer.Name = tmp;
+                if (!SetValue(ref _layer.Name, value, "Name")) return;
                 _layerViewModel.Update();
             }
         }
@@ -28,9 +26,7 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.0000}", _layer.ThermalConductivity); }
             set
             {
-                var tmp = _layer.ThermalConductivity;
-                if (!SetValue(ref tmp, double.Parse(value, CultureInfo.InvariantCulture), "ThermalConductivity")) return;
-                _layer.ThermalConductivity = tmp;
+                if (!SetValue(ref _layer.ThermalConductivity, double.Parse(value), "ThermalConductivity")) return;
                 _layerViewModel.Update();
             }
         }
@@ -40,9 +36,7 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.00}", _layer.Thickness); }
             set
             {
-                var tmp = _layer.Thickness;
-                if (!SetValue(ref tmp, double.Parse(value, CultureInfo.InvariantCulture), "Thickness")) return;
-                _layer.Thickness = tmp;
+                if (!SetValue(ref _layer.Thickness, double.Parse(value), "Thickness")) return;
                 _layerViewModel.Update();
             }
         }

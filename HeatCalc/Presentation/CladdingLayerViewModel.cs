@@ -50,7 +50,7 @@ namespace HeatCalc.Presentation
             {
                 if (SetValue(ref isSelected, value, "IsSelected"))
                 {
-                    MainWindowViewModel.CurrentMainWindowViewModel.SelectedCladdingLayer = isSelected ? this : null;
+                    MainWindowViewModel.CurrentMainWindowViewModel.SelectedCladdingLayer = isSelected ? _layerEditViewModel : null;
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace HeatCalc.Presentation
             _layerEditViewModel = new CladdingLayerEditViewModel(layer, this);
 
             _deleteCladdingLayer = new RelayCommand(param => _partViewModel.DeleteCladdingLayerCommand(_layer, this));
-            _addToLibrary = new RelayCommand(param => MainWindowViewModel.CurrentMainWindowViewModel.AddMaterial(new Material(layer.ThermalConductivity){Name = layer.Name}));
+            _addToLibrary = new RelayCommand(param => MainWindowViewModel.CurrentMainWindowViewModel.AddMaterial(new Material{ThermalConductivity = layer.ThermalConductivity, Name = layer.Name}));
         }
 
         public void Update()
@@ -71,13 +71,6 @@ namespace HeatCalc.Presentation
             OnPropertyChanged("ThermalConductivity");
             OnPropertyChanged("Thickness");
             _partViewModel.Update();
-        }
-
-        public void SetMaterial(Material material)
-        {
-            _layer.ThermalConductivity = material.ThermalConductivity;
-            _layer.Name = material.Name;
-            Update();
         }
     }
 }

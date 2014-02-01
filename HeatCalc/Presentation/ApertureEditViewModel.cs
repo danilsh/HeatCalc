@@ -16,9 +16,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (String.IsNullOrEmpty(value)) return;
-                var tmp = _aperture.Name;
-                if (!SetValue(ref tmp, value, "Name")) return;
-                _aperture.Name = tmp;
+                if (!SetValue(ref _aperture.Name, value, "Name")) return;
                 _apertureViewModel.Update();
             }
         }
@@ -28,9 +26,7 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.0000}", _aperture.HeatTransferCoefficient); }
             set
             {
-                var tmp = _aperture.HeatTransferCoefficient;
-                if (!SetValue(ref tmp, double.Parse(value, CultureInfo.InvariantCulture), "HeatTransferCoefficient")) return;
-                _aperture.HeatTransferCoefficient = tmp;
+                if (!SetValue(ref _aperture.HeatTransferCoefficient, double.Parse(value), "HeatTransferCoefficient")) return;
                 _apertureViewModel.Update();
             }
         }
@@ -40,9 +36,7 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.00}", _aperture.Area); }
             set
             {
-                var tmp = _aperture.Area;
-                if (!SetValue(ref tmp, double.Parse(value, CultureInfo.InvariantCulture), "Area")) return;
-                _aperture.Area = tmp;
+                if (!SetValue(ref _aperture.Area, double.Parse(value), "Area")) return;
                 _apertureViewModel.Update();
             }
         }

@@ -15,9 +15,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (String.IsNullOrEmpty(value)) return;
-                var tmp = _cladding.Name;
-                if (!SetValue(ref tmp, value, "Name")) return;
-                _cladding.Name = tmp;
+                if (!SetValue(ref _cladding.Name, value, "Name")) return;
                 _claddingViewModel.Update();
             }
         }

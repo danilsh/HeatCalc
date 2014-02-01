@@ -7,35 +7,20 @@ namespace HeatCalc.HeatLoss
     /// </summary>
     class CladdingLayer
     {
-        private String _name = "Материал Стены/Перекрытия";
         /// <summary>
         /// Название материала ограждающей конструкции
         /// </summary>
-        public String Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public String Name = "Материал Стены/Перекрытия";
 
-        private double _thermalConductivity;
         /// <summary>
         /// Коэффициент теплопроводности, Вт / (м2 К)
         /// </summary>
-        public double ThermalConductivity
-        {
-            get { return _thermalConductivity; }
-            set { _thermalConductivity = value; }
-        }
-    
-        private double _thickness;
+        public double ThermalConductivity;
+
         /// <summary>
         /// Толщина, м 
         /// </summary>
-        public double Thickness
-        {
-            get { return _thickness; }
-            set { _thickness = value; }
-        }
+        public double Thickness;
 
         /// <summary>
         /// Теплосопротивление слоя ограждающей конструкции, м2 К / Вт
@@ -44,19 +29,8 @@ namespace HeatCalc.HeatLoss
         {
             get
             {
-                return (Math.Abs(_thermalConductivity) < 1e-6) ? 0.0 : _thickness / _thermalConductivity;
+                return (Math.Abs(ThermalConductivity) < 1e-6) ? 0.0 : Thickness / ThermalConductivity;
             }
-        }
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="thermalConductivity">Коэффициент теплопроводности, Вт / (м2 К)</param>
-        /// <param name="thickness">Толщина, м</param>
-        public CladdingLayer(double thermalConductivity, double thickness)
-        {
-            _thermalConductivity = thermalConductivity;
-            _thickness = thickness;
         }
     }
 }

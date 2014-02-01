@@ -17,35 +17,20 @@ namespace HeatCalc.HeatLoss
             get { return _claddings; }
         }
 
-        private String _name = "Зона";
         /// <summary>
         /// Название зоны
         /// </summary>
-        public String Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
+        public String Name = "Зона";
 
-        private double _volume;
         /// <summary>
         /// Объем зоны, м3
         /// </summary>
-        public double Volume
-        {
-            get { return _volume; }
-            set { _volume = value; }
-        }
-    
-        private double _airExchange;
+        public double Volume;
+
         /// <summary>
         /// Объем приточного наружного воздуха, м3 / час
         /// </summary>
-        public double AirExchange
-        {
-            get { return _airExchange; }
-            set { _airExchange = value; }
-        }
+        public double AirExchange;
 
         /// Удельная теплоемкость 1м3 воздуха при постоянном давлении, КДж / (кг * К)
         /// (1 Дж = 1 Вт * с)
@@ -63,23 +48,12 @@ namespace HeatCalc.HeatLoss
             get
             {
                 // Вт * с / (кг * К) * кг / м3 * м3 / с = Вт / К 
-                var tmp = Cp * p * _airExchange * 1000.0 / 3600.0;
+                var tmp = Cp * p * AirExchange * 1000.0 / 3600.0;
 
                 _claddings.ForEach(c => tmp += c.Tc);
 
                 return tmp;
             }
-        }
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="zoneVolume">Объем зоня. м3</param>
-        /// <param name="airExchange">Количество воздушных объемов зоны, оборачиваемых за час через вентиляцию</param>
-        public Zone(double zoneVolume, double airExchange)
-        {
-            _volume = zoneVolume;
-            _airExchange = airExchange;
         }
     }
 }
