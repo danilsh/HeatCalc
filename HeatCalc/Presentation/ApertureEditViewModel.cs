@@ -17,6 +17,7 @@ namespace HeatCalc.Presentation
             {
                 if (String.IsNullOrEmpty(value)) return;
                 if (!SetValue(ref _aperture.Name, value, "Name")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _apertureViewModel.Update();
             }
         }
@@ -27,6 +28,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (!SetValue(ref _aperture.HeatTransferCoefficient, double.Parse(value), "HeatTransferCoefficient")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _apertureViewModel.Update();
             }
         }
@@ -37,6 +39,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (!SetValue(ref _aperture.Area, double.Parse(value), "Area")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _apertureViewModel.Update();
             }
         }

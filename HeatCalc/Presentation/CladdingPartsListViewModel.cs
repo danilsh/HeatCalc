@@ -42,6 +42,9 @@ namespace HeatCalc.Presentation
 
         public void DeleteCladdingPartCommand(CladdingPart part, CladdingPartViewModel partViewModel)
         {
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService == null) return;
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService.YesNoDialog("Удаление", "Объект будет удалён безвозвратно. Вы уверены?") == DialogResult.No)
+                return;
             _cladding.Parts.Remove(part);
             children.Remove(partViewModel);
             _claddingViewModel.Update();

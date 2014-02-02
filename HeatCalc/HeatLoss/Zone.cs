@@ -8,6 +8,12 @@ namespace HeatCalc.HeatLoss
     /// </summary>
     class Zone
     {
+        private Building _building;
+        public Building Building
+        {
+            set { _building = value; }
+        }
+
         private readonly List<Cladding> _claddings = new List<Cladding>();
         /// <summary>
         /// Ограждающие конструкции, входящие в состав зоны
@@ -54,6 +60,14 @@ namespace HeatCalc.HeatLoss
 
                 return tmp;
             }
+        }
+
+        /// <summary>
+        /// Теплопотери в зоне, Вт
+        /// </summary>
+        public double HeatLoss
+        {
+            get { return Tc*(_building.InternalTemperature - _building.ExternalTemperature); }
         }
     }
 }

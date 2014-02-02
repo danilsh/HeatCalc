@@ -16,6 +16,7 @@ namespace HeatCalc.Presentation
             {
                 if (String.IsNullOrEmpty(value)) return;
                 if (!SetValue(ref _cladding.Name, value, "Name")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _claddingViewModel.Update();
             }
         }

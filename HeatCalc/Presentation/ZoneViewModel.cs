@@ -31,6 +31,11 @@ namespace HeatCalc.Presentation
             get { return String.Format("{0:0.0}", _zone.AirExchange); }
         }
 
+        public String HeatLoss
+        {
+            get { return String.Format("{0:0.#}", _zone.HeatLoss); }
+        }
+
         private readonly RelayCommand _newCladding;
         public ICommand NewCladding
         {
@@ -59,6 +64,7 @@ namespace HeatCalc.Presentation
             OnPropertyChanged("Name");
             OnPropertyChanged("Volume");
             OnPropertyChanged("AirExchange");
+            OnPropertyChanged("HeatLoss");
             _buildingViewModel.Update();
         }
 
@@ -72,6 +78,9 @@ namespace HeatCalc.Presentation
 
         public void DeleteCladdingCommand(Cladding cladding, CladdingViewModel claddingViewModel)
         {
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService == null) return;
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService.YesNoDialog("Удаление", "Объект будет удалён безвозвратно. Вы уверены?") == DialogResult.No)
+                return;
             _zone.Claddings.Remove(cladding);
             children.Remove(claddingViewModel);
             _buildingViewModel.Update();

@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:HeatCalc.Presentation"
         xmlns:localIo="clr-namespace:HeatCalc.IO"
-        Height="350" Width="700" WindowState="Maximized" Title="{Binding Path=Title}">
+        Height="350" Width="700" WindowState="Maximized" Title="{Binding Path=Title}"
+        Closing="OnClosing">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="TreeViewBorderStyle">
@@ -107,6 +108,7 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -127,7 +129,11 @@
                         <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding AirExchange}" />
                         <TextBlock Grid.Row="2" Grid.Column="4" Text="м3 / час" />
 
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="3" Grid.Column="6">
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Теплопотери:" />
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding HeatLoss}" />
+                        <TextBlock Grid.Row="3" Grid.Column="4" Text="Вт" />
+                        
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Grid.RowSpan="4" Grid.Column="6">
                             <StackPanel.Resources>
                                 <ResourceDictionary>
                                     <ResourceDictionary.MergedDictionaries>

@@ -47,6 +47,17 @@ namespace HeatCalc.Presentation
             set { SetValue(ref _title, value, "Title"); }
         }
 
+        private Boolean _isDirty = false;
+        public Boolean IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                _isDirty = value;
+                SetValue(ref _title, GetTitleString(), "Title");
+            }
+        }
+
         private String _fileName = String.Empty;
 
         private readonly RelayCommand _save;
@@ -81,24 +92,34 @@ namespace HeatCalc.Presentation
             _currentMainWindowViewModel = this;
         }
 
-        private void SaveCommand()
+        public Boolean SaveCommand()
         {
-            if(String.IsNullOrEmpty(_fileName)) SaveDlgCommand();
-            else FileService.StoreBuilding(_buildings[0].Building, _fileName);
+            if(String.IsNullOrEmpty(_fileName)) return SaveDlgCommand();
+            FileService.StoreBuilding(_buildings[0].Building, _fileName);
+            _isDirty = false;
+            return true;
         }
 
-        private void SaveDlgCommand()
+        private Boolean SaveDlgCommand()
         {
-            if (DialogService == null) return;
-            if (!DialogService.SaveFileDialog(ref _fileName)) return;
+            if (DialogService == null) return true;
+            if (!DialogService.SaveFileDialog(ref _fileName)) return false;
 
             FileService.StoreBuilding(_buildings[0].Building, _fileName);
-            SetValue(ref _title,"Тепловые расчеты - " + Path.GetFileNameWithoutExtension(_fileName), "Title");
+            SetValue(ref _title, GetTitleString(), "Title");
+            _isDirty = false;
+            return true;
+        }
+
+        private String GetTitleString()
+        {
+            return "Тепловые расчеты - " + Path.GetFileNameWithoutExtension(_fileName) + (_isDirty ? "*" : "");
         }
 
         private void LoadDlgCommand()
         {
             if (DialogService == null) return;
+            if (!CanClose()) return;
             var fileName = DialogService.OpenfileDialog();
             if (String.IsNullOrEmpty(fileName)) return;
 
@@ -108,11 +129,15 @@ namespace HeatCalc.Presentation
             _buildings.Clear();
             _buildings.Add(buildingVm);
             _fileName = fileName;
-            SetValue(ref _title, "Тепловые расчеты - " + Path.GetFileNameWithoutExtension(_fileName), "Title");
+            _isDirty = false;
+            SetValue(ref _title, GetTitleString(), "Title");
         }
 
         public void DeleteMaterial(Material material, MaterialViewModel materialViewModel)
         {
+            if (DialogService == null) return;
+            if (DialogService.YesNoDialog("Удаление", "Объект будет удалён безвозвратно. Вы уверены?") == DialogResult.No)
+                return;
             _library.Materials.Remove(material);
             _materials.Remove(materialViewModel);
         }
@@ -121,6 +146,23 @@ namespace HeatCalc.Presentation
         {
             _library.Materials.Add(material);
             _materials.Add(new MaterialViewModel(material, this));
+        }
+
+        public Boolean CanClose()
+        {
+            if (!IsDirty) return true;
+            if (DialogService == null) return true;
+            switch (DialogService.YesNoCancelDialog("Предупреждение", "В проекте есть несохранённые данные. Сохранить?"))
+            {
+                case DialogResult.Cancel:
+                    return false;
+                case DialogResult.No:
+                    return true;
+                case DialogResult.Yes:
+                    return SaveCommand();
+                default:
+                    throw new InvalidOperationException();
+            }
         }
     }
 }

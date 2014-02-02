@@ -43,6 +43,9 @@ namespace HeatCalc.Presentation
 
         public void DeleteApertureCommand(Aperture aperture, ApertureViewModel apertureViewModel)
         {
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService == null) return;
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService.YesNoDialog("Удаление", "Объект будет удалён безвозвратно. Вы уверены?") == DialogResult.No)
+                return;
             _cladding.Apertures.Remove(aperture);
             children.Remove(apertureViewModel);
             _claddingViewModel.Update();

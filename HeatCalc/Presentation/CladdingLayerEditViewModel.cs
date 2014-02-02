@@ -17,6 +17,7 @@ namespace HeatCalc.Presentation
             {
                 if (String.IsNullOrEmpty(value)) return;
                 if (!SetValue(ref _layer.Name, value, "Name")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _layerViewModel.Update();
             }
         }
@@ -27,6 +28,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (!SetValue(ref _layer.ThermalConductivity, double.Parse(value), "ThermalConductivity")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _layerViewModel.Update();
             }
         }
@@ -37,6 +39,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (!SetValue(ref _layer.Thickness, double.Parse(value), "Thickness")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _layerViewModel.Update();
             }
         }

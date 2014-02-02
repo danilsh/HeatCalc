@@ -17,6 +17,7 @@ namespace HeatCalc.Presentation
             {
                 if (String.IsNullOrEmpty(value)) return;
                 if (!SetValue(ref _zone.Name, value, "Name")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _zoneViewModel.Update();
             }
         }
@@ -27,6 +28,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (!SetValue(ref _zone.Volume, double.Parse(value), "Volume")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _zoneViewModel.Update();
             }
         }
@@ -37,6 +39,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (!SetValue(ref _zone.AirExchange, double.Parse(value), "AirExchange")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _zoneViewModel.Update();
             }
         }

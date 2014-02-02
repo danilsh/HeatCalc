@@ -70,6 +70,9 @@ namespace HeatCalc.Presentation
 
         public void DeleteCladdingLayerCommand(CladdingLayer layer, CladdingLayerViewModel layerViewModel)
         {
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService == null) return;
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService.YesNoDialog("Удаление", "Объект будет удалён безвозвратно. Вы уверены?") == DialogResult.No)
+                return;
             _part.Layers.Remove(layer);
             children.Remove(layerViewModel);
             _partsListViewModel.Update();

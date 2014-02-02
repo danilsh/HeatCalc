@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
+using HeatCalc.Presentation;
 
 namespace HeatCalc
 {
@@ -10,6 +13,11 @@ namespace HeatCalc
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void OnClosing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = !MainWindowViewModel.CurrentMainWindowViewModel.CanClose();
         }
     }
 }

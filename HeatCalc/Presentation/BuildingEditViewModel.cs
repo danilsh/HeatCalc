@@ -17,6 +17,7 @@ namespace HeatCalc.Presentation
             {
                 if (String.IsNullOrEmpty(value)) return;
                 if (!SetValue(ref _building.Name, value, "Name")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _buildingViewModel.Update();
             }
         }
@@ -27,6 +28,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (!SetValue(ref _building.ExternalTemperature, double.Parse(value), "ExternalTemperature")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _buildingViewModel.Update();
             }
         }
@@ -37,6 +39,7 @@ namespace HeatCalc.Presentation
             set
             {
                 if (!SetValue(ref _building.InternalTemperature, double.Parse(value), "InternalTemperature")) return;
+                MainWindowViewModel.CurrentMainWindowViewModel.IsDirty = true;
                 _buildingViewModel.Update();
             }
         }

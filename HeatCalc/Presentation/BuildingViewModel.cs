@@ -66,6 +66,7 @@ namespace HeatCalc.Presentation
         {
             var zone = new Zone
                 {
+                    Building = _building,
                     AirExchange = 1.0,
                     Volume = 1.0
                 };
@@ -76,6 +77,9 @@ namespace HeatCalc.Presentation
 
         public void DeleteZoneCommand(Zone zone, ZoneViewModel zoneViewModel)
         {
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService == null) return;
+            if (MainWindowViewModel.CurrentMainWindowViewModel.DialogService.YesNoDialog("Удаление", "Объект будет удалён безвозвратно. Вы уверены?") == DialogResult.No)
+                return;
             _building.Zones.Remove(zone);
             children.Remove(zoneViewModel);
             OnPropertyChanged("HeatLoss");

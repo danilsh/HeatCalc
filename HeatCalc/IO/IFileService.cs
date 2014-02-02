@@ -237,6 +237,7 @@ namespace HeatCalc.IO
                     };
                 foreach (var z in element.Elements("Zone").Select(LoadZone).Where(z => z != null))
                 {
+                    z.Building = ret;
                     ret.Zones.Add(z);
                 }
                 return ret;
