@@ -72,7 +72,10 @@ namespace HeatCalc.Presentation
         {
             var cladding = new Cladding();
             _zone.Claddings.Add(cladding);
-            children.Add(new CladdingViewModel(cladding, this));
+            var tmp = new CladdingViewModel(cladding, this);
+            children.Add(tmp);
+            IsExpanded = true;
+            tmp.IsSelected = true;
             _buildingViewModel.Update();
         }
 

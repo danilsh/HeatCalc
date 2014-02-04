@@ -90,7 +90,7 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </StackPanel.Resources>
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewZone}" Content="{StaticResource AddIcon}" />
+                            <Button ToolTip="Добавить зону" Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewZone}" Content="{StaticResource AddIcon}" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -141,8 +141,12 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </StackPanel.Resources>
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewCladding}" Content="{StaticResource AddIcon}" />
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteZone}" Content="{StaticResource DeleteIcon}" />
+                            <Button ToolTip="Добавить огр. конструкцию" Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewCladding}" Content="{StaticResource AddIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteZone}" Content="{StaticResource DeleteIcon}">
+                                <Button.ToolTip>
+                                    <ToolTip ContentStringFormat="{}Удалить '{0}'" Content="{Binding Name}" />
+                                </Button.ToolTip>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -174,7 +178,11 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </StackPanel.Resources>
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteCladding}" Content="{StaticResource DeleteIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteCladding}" Content="{StaticResource DeleteIcon}">
+                                <Button.ToolTip>
+                                    <ToolTip ContentStringFormat="{}Удалить '{0}'" Content="{Binding Name}" />
+                                </Button.ToolTip>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -206,7 +214,7 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </StackPanel.Resources>
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewAperture}" Content="{StaticResource AddIcon}" />
+                            <Button ToolTip="Добавить окно/дверь/люк" Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewAperture}" Content="{StaticResource AddIcon}" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -238,7 +246,7 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </StackPanel.Resources>
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewCladdingPart}" Content="{StaticResource AddIcon}" />
+                            <Button ToolTip="Добавить элемент огр. констр." Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewCladdingPart}" Content="{StaticResource AddIcon}" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -284,7 +292,11 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </StackPanel.Resources>
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteAperture}" Content="{StaticResource DeleteIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteAperture}" Content="{StaticResource DeleteIcon}">
+                                <Button.ToolTip>
+                                    <ToolTip ContentStringFormat="{}Удалить '{0}'" Content="{Binding Name}" />
+                                </Button.ToolTip>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -325,8 +337,12 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </StackPanel.Resources>
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewCladdingLayer}" Content="{StaticResource AddIcon}" />
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteCladdingPart}" Content="{StaticResource DeleteIcon}" />
+                            <Button ToolTip="Добавить слой огр. констр." Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=NewCladdingLayer}" Content="{StaticResource AddIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteCladdingPart}" Content="{StaticResource DeleteIcon}">
+                                <Button.ToolTip>
+                                    <ToolTip ContentStringFormat="{}Удалить '{0}'" Content="{Binding Name}" />
+                                </Button.ToolTip>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -372,8 +388,16 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </StackPanel.Resources>
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=AddToLibrary}" Content="{StaticResource DownArrowIcon}" />
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteCladdingLayer}" Content="{StaticResource DeleteIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=AddToLibrary}" Content="{StaticResource DownArrowIcon}">
+                                <Button.ToolTip>
+                                    <ToolTip ContentStringFormat="{}Добавить '{0}' в библиотеку" Content="{Binding Name}" />
+                                </Button.ToolTip>
+                            </Button>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteCladdingLayer}" Content="{StaticResource DeleteIcon}">
+                                <Button.ToolTip>
+                                    <ToolTip ContentStringFormat="{}Удалить '{0}'" Content="{Binding Name}" />
+                                </Button.ToolTip>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -545,8 +569,16 @@
                                     </ResourceDictionary.MergedDictionaries>
                                 </ResourceDictionary>
                             </StackPanel.Resources>
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=SetMaterial}" Content="{StaticResource UpArrowIcon}" />
-                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteMaterial}" Content="{StaticResource DeleteIcon}" />
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=SetMaterial}" Content="{StaticResource UpArrowIcon}">
+                                <Button.ToolTip>
+                                    <ToolTip ContentStringFormat="{}Применить '{0}' к слою" Content="{Binding Name}" />
+                                </Button.ToolTip>
+                            </Button>
+                            <Button Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=IsSelected}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding Path=DeleteMaterial}" Content="{StaticResource DeleteIcon}">
+                                <Button.ToolTip>
+                                    <ToolTip ContentStringFormat="{}Удалить '{0}'" Content="{Binding Name}" />
+                                </Button.ToolTip>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -595,7 +627,8 @@
                     </TreeView.Resources>
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
-                            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                         </Style>
                     </TreeView.ItemContainerStyle>
                 </TreeView>

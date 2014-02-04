@@ -36,7 +36,10 @@ namespace HeatCalc.Presentation
                     Area = 1.0
                 };
             _cladding.Parts.Add(wallPart);
-            children.Add(new CladdingPartViewModel(wallPart, this));
+            var tmp = new CladdingPartViewModel(wallPart, this);
+            children.Add(tmp);
+            IsExpanded = true;
+            tmp.IsSelected = true;
             _claddingViewModel.Update();
         }
 

@@ -71,7 +71,10 @@ namespace HeatCalc.Presentation
                     Volume = 1.0
                 };
             _building.Zones.Add(zone);
-            children.Add(new ZoneViewModel(zone, this));
+            var tmp = new ZoneViewModel(zone, this);
+            children.Add(tmp);
+            IsExpanded = true;
+            tmp.IsSelected = true;
             OnPropertyChanged("HeatLoss");
         }
 

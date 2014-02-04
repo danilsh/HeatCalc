@@ -37,7 +37,10 @@ namespace HeatCalc.Presentation
                     Area = 1.0
                 };
             _cladding.Apertures.Add(aperture);
-            children.Add(new ApertureViewModel(aperture, this));
+            var tmp = new ApertureViewModel(aperture, this);
+            children.Add(tmp);
+            IsExpanded = true;
+            tmp.IsSelected = true;
             _claddingViewModel.Update();
         }
 

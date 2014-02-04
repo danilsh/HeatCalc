@@ -96,7 +96,7 @@ namespace HeatCalc.Presentation
         {
             if(String.IsNullOrEmpty(_fileName)) return SaveDlgCommand();
             FileService.StoreBuilding(_buildings[0].Building, _fileName);
-            _isDirty = false;
+            IsDirty = false;
             return true;
         }
 
@@ -106,8 +106,7 @@ namespace HeatCalc.Presentation
             if (!DialogService.SaveFileDialog(ref _fileName)) return false;
 
             FileService.StoreBuilding(_buildings[0].Building, _fileName);
-            SetValue(ref _title, GetTitleString(), "Title");
-            _isDirty = false;
+            IsDirty = false;
             return true;
         }
 
@@ -129,8 +128,7 @@ namespace HeatCalc.Presentation
             _buildings.Clear();
             _buildings.Add(buildingVm);
             _fileName = fileName;
-            _isDirty = false;
-            SetValue(ref _title, GetTitleString(), "Title");
+            IsDirty = false;
         }
 
         public void DeleteMaterial(Material material, MaterialViewModel materialViewModel)

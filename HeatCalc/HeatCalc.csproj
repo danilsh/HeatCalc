@@ -92,7 +92,6 @@
     <Compile Include="Presentation\BuildingViewModel.cs" />
     <Compile Include="Presentation\CladdingEditViewModel.cs" />
     <Compile Include="Presentation\CladdingViewModel.cs" />
-    <Compile Include="Presentation\EditorTemplateSelector.cs" />
     <Compile Include="Presentation\IDialogService.cs" />
     <Compile Include="Presentation\ListViewItemViewModel.cs" />
     <Compile Include="Presentation\MainWindowViewModel.cs" />

@@ -64,7 +64,10 @@ namespace HeatCalc.Presentation
                     Thickness = 1.0
                 };
             _part.Layers.Add(layer);
-            children.Add(new CladdingLayerViewModel(layer, this));
+            var tmp = new CladdingLayerViewModel(layer, this);
+            children.Add(tmp);
+            IsExpanded = true;
+            tmp.IsSelected = true;
             _partsListViewModel.Update();
         }
 
